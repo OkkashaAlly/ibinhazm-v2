@@ -4,11 +4,13 @@ const BooksContext = createContext();
 
 export const BooksProvider = ({ children }) => {
   const [books, setBooks] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
-  const getBooks = async () => {
+  const getBooks = async (query = "flowers") => {
+    setLoading(true);
+
     const response = await fetch(
-      "https://www.googleapis.com/books/v1/volumes/?q=flowers"
+      `https://www.googleapis.com/books/v1/volumes/?q=${query}`
     );
 
     const data = await response.json();

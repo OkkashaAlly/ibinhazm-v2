@@ -1,3 +1,4 @@
+import { useState } from "react";
 import SearchInput from "../components/SearchInput";
 import UserProfile from "../components/UserProfile";
 

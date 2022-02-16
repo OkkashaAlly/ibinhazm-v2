@@ -24,7 +24,7 @@ function Main() {
         <h2 className="heading heading__2">recently added</h2>
         <div className="recently__books m-t-s">
           {books.map(book => (
-            <Book title={book.title} author={book.author} key={book.id} />
+            <Book book={book} key={book.id} />
           ))}
         </div>
       </div>
