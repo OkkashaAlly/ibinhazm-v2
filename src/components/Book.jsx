@@ -1,6 +1,12 @@
+import BookPreview from "../components/BookPreview";
+
 function Book({ title, author }) {
+  const handleClick = _ => {
+    return <BookPreview />;
+  };
+
   return (
-    <div className="book">
+    <div onClick={handleClick} className="book">
       <span className="book__img"></span>
       <div className="book__info">
         <h4 className="heading heading__4 book__title">{title}</h4>

@@ -15,7 +15,7 @@
   &__close {
     height: 4rem !important;
     width: 4rem !important;
-    transform: rotate(45deg);
+    transform: rotate(45deg) !important;
 
     &:hover {
       transform: rotate(45deg) scale(1.3);

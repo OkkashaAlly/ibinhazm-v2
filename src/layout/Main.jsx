@@ -1,58 +1,22 @@
+import { useContext, useEffect } from "react";
+import BooksContext from "../context/BooksContext";
 import Book from "../components/Book";
+import Spinner from "../components/shared/Spinner";
 
 function Main() {
-  const books = [
-    {
-      id: 1,
-      author: "Walter Isac",
-      title: "Steve Jobs",
-    },
-    {
-      id: 2,
-      author: "Okkasha Ally",
-      title: "React JS",
-    },
-    {
-      id: 3,
-      author: "Ibrahim Shelby",
-      title: "Unique Academy",
-    },
-    {
-      id: 4,
-      author: "ABD Walker",
-      title: "Steam Nature",
-    },
-    {
-      id: 5,
-      author: "Baga",
-      title: "Body building",
-    },
-    {
-      id: 6,
-      author: "Yesu",
-      title: "Vibing",
-    },
-    {
-      id: 7,
-      author: "Chalaby",
-      title: "Quad bike",
-    },
-    {
-      id: 8,
-      author: "Omar bigy",
-      title: "Football",
-    },
-    {
-      id: 9,
-      author: "Omar bigy",
-      title: "Football",
-    },
-    {
-      id: 10,
-      author: "Omar bigy",
-      title: "Football",
-    },
-  ];
+  const { books, loading, getBooks } = useContext(BooksContext);
+
+  useEffect(_ => getBooks(), []);
+
+  if (loading) {
+    return (
+      <section className="app m-t-m p-s m-b-s">
+        <div className="recently m-b-m">
+          <Spinner />
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section className="app m-t-m p-s m-b-s">
