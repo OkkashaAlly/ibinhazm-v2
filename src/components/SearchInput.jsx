@@ -4,12 +4,13 @@ import BooksContext from "../context/BooksContext";
 function SearchInput() {
   const [text, setText] = useState("");
 
-  const { getBooks } = useContext(BooksContext);
+  const { getBooks, closePreview } = useContext(BooksContext);
 
   const handleChange = e => setText(e.target.value);
 
   const handleSubmit = e => {
     e.preventDefault();
+    closePreview();
     getBooks(text);
   };
 
