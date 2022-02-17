@@ -5,10 +5,12 @@ const BooksContext = createContext();
 
 export const BooksProvider = ({ children }) => {
   const initialState = {
-    books: [],
-    loading: false,
     book: {},
+    books: [],
+    bookmarks: [],
+    loading: false,
     showPreview: {},
+    loadBookmarks: false,
     displayPreview: { opacity: 0 },
   };
 
@@ -53,6 +55,7 @@ export const BooksProvider = ({ children }) => {
     dispatch({ type: "GET_BOOKS", payload: books });
   };
 
+  // Open preview modal
   const renderPreview = book => {
     const preview = {
       transform: "translateX(0)",
@@ -67,6 +70,7 @@ export const BooksProvider = ({ children }) => {
     dispatch({ type: "RENDER_PREVIEW", payload: { preview, book, display } });
   };
 
+  // Close preview modal
   const closePreview = _ => {
     const preview = {
       transform: "translateX(50rem)",
@@ -80,6 +84,15 @@ export const BooksProvider = ({ children }) => {
     dispatch({ type: "CLOSE_PREVIEW", payload: { preview, display } });
   };
 
+  // Bookmark the books
+  const bookMark = book => {
+    const bookmarks = [...state.bookmarks, book];
+    state.book.bookmarked = true;
+    dispatch({ type: "BOOKMARK", payload: bookmarks });
+  };
+
+  const renderBookmarks = _ => dispatch({ type: "GET_BOOKMARKS" });
+
   return (
     <BooksContext.Provider
       value={{
@@ -88,9 +101,13 @@ export const BooksProvider = ({ children }) => {
         loading: state.loading,
         showPreview: state.showPreview,
         displayPreview: state.displayPreview,
+        bookmarks: state.bookmarks,
+        loadBookmarks: state.loadBookmarks,
         getBooks,
         renderPreview,
         closePreview,
+        bookMark,
+        renderBookmarks,
       }}
     >
       {children}

@@ -4,7 +4,8 @@ import Book from "../components/Book";
 import Spinner from "../components/shared/Spinner";
 
 function Main() {
-  const { books, loading, getBooks } = useContext(BooksContext);
+  const { books, bookmarks, loadBookmarks, loading, getBooks } =
+    useContext(BooksContext);
 
   useEffect(_ => getBooks(), []);
 
@@ -13,6 +14,21 @@ function Main() {
       <section className="app m-t-m p-s m-b-s">
         <div className="recently m-b-m">
           <Spinner />
+        </div>
+      </section>
+    );
+  }
+
+  if (loadBookmarks) {
+    return (
+      <section className="app m-t-m p-s m-b-s">
+        <div className="recently m-b-m">
+          <h2 className="heading heading__2">recently added</h2>
+          <div className="recently__books m-t-s">
+            {bookmarks.map(book => (
+              <Book book={book} key={book.id} />
+            ))}
+          </div>
         </div>
       </section>
     );

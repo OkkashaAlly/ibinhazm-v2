@@ -3,9 +3,9 @@ import sprite from "../assets/sprite.svg";
 import BooksContext from "../context/BooksContext";
 
 function BookPreview({ book }) {
-  book.bookmarked = false;
+  // book.bookmarked = false;
 
-  const { closePreview, displayPreview } = useContext(BooksContext);
+  const { closePreview, displayPreview, bookMark } = useContext(BooksContext);
 
   return (
     <>
@@ -52,7 +52,10 @@ function BookPreview({ book }) {
         <div className="preview__book-bottom m-t-m">
           <div className="bottom__wraper">
             <h5 className="preview__book-info prologue">Prologue:</h5>
-            <svg className="btn btn__bookmark icon">
+            <svg
+              onClick={_ => bookMark(book)}
+              className="btn btn__bookmark icon"
+            >
               <use
                 href={
                   sprite +

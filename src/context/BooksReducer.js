@@ -10,6 +10,7 @@ const BooksReducer = (state, action) => {
         ...state,
         books: action.payload,
         loading: false,
+        loadBookmarks: false,
       };
     case "RENDER_PREVIEW":
       return {
@@ -24,6 +25,16 @@ const BooksReducer = (state, action) => {
         book: {},
         showPreview: action.payload.preview,
         displayPreview: action.payload.display,
+      };
+    case "BOOKMARK":
+      return {
+        ...state,
+        bookmarks: action.payload,
+      };
+    case "GET_BOOKMARKS":
+      return {
+        ...state,
+        loadBookmarks: true,
       };
     default:
       return {
