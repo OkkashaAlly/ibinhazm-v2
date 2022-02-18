@@ -96,8 +96,17 @@ export const BooksProvider = ({ children }) => {
 
   // Bookmark the books
   const bookMark = book => {
-    const bookmarks = [...state.bookmarks, book];
-    state.book.bookmarked = true;
+    let bookmarks;
+    if (
+      state.bookmarks.length !== 0 &&
+      state.bookmarks.some(bookmark => bookmark.id === book.id)
+    ) {
+      state.book.bookmarked = false;
+      bookmarks = state.bookmarks.filter(bookmark => bookmark.id !== book.id);
+    } else {
+      bookmarks = [...state.bookmarks, book];
+      state.book.bookmarked = true;
+    }
     dispatch({ type: "BOOKMARK", payload: bookmarks });
   };
 

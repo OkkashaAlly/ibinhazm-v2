@@ -3,6 +3,7 @@ import BooksContext from "../context/BooksContext";
 import Book from "../components/Book";
 import Spinner from "../components/shared/Spinner";
 import Message from "../components/shared/Message";
+import Pagination from "../components/Pagination";
 
 function Main() {
   const { books, bookmarks, loadBookmarks, loading, getBooks, message } =
@@ -54,6 +55,7 @@ function Main() {
             <Book book={book} key={book.id} />
           ))}
         </div>
+        <Pagination />
       </div>
     </section>
   );
