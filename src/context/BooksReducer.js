@@ -11,6 +11,7 @@ const BooksReducer = (state, action) => {
         books: action.payload,
         loading: false,
         loadBookmarks: false,
+        message: {},
       };
     case "RENDER_PREVIEW":
       return {
@@ -35,6 +36,15 @@ const BooksReducer = (state, action) => {
       return {
         ...state,
         loadBookmarks: true,
+      };
+    case "SET_ERROR":
+      return {
+        ...state,
+        loading: false,
+        message: {
+          type: "error",
+          text: action.payload,
+        },
       };
     default:
       return {

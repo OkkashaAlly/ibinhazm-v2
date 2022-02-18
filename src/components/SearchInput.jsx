@@ -1,17 +1,27 @@
 import { useState, useContext } from "react";
 import BooksContext from "../context/BooksContext";
+import Message from "./shared/Message";
 
 function SearchInput() {
   const [text, setText] = useState("");
 
-  const { getBooks, closePreview } = useContext(BooksContext);
+  const { getBooks, closePreview, setMessage } = useContext(BooksContext);
 
   const handleChange = e => setText(e.target.value);
 
   const handleSubmit = e => {
     e.preventDefault();
-    closePreview();
-    getBooks(text);
+
+    if (text === "" || text.length === 0) {
+      const msg = {
+        type: "error",
+        message: "Please type in something to search. It can't be blank",
+      };
+      setMessage(msg);
+    } else {
+      closePreview();
+      getBooks(text);
+    }
   };
 
   return (

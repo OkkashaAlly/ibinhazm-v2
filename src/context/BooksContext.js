@@ -12,47 +12,57 @@ export const BooksProvider = ({ children }) => {
     showPreview: {},
     loadBookmarks: false,
     displayPreview: { opacity: 0 },
+    message: {},
   };
 
   const [state, dispatch] = useReducer(BooksReducer, initialState);
 
   // Load books from API
   const getBooks = async (query = "flowers") => {
-    dispatch({ type: "SET_LOADING" });
+    try {
+      dispatch({ type: "SET_LOADING" });
 
-    const response = await fetch(
-      `https://www.googleapis.com/books/v1/volumes/?q=${query}`
-    );
+      const response = await fetch(
+        `https://www.googleapis.com/books/v1/volumes/?q=${query}`
+      );
 
-    const data = await response.json();
+      const data = await response.json();
 
-    const books = data.items.map(book => {
-      return {
-        id: book.id,
-        title: book.volumeInfo.title,
-        authors: book.volumeInfo.authors,
-        publisher: book.volumeInfo.publisher,
-        previewLink: book.volumeInfo.previewLink,
-        publishedDate: book.volumeInfo.publishedDate,
-        description: book.volumeInfo.description?.replaceAll("<p>", " "),
-        isbnType: book.volumeInfo.industryIdentifiers
-          ? book.volumeInfo.industryIdentifiers[0].type
-          : "isbn",
-        isbn: book.volumeInfo.industryIdentifiers
-          ? book.volumeInfo.industryIdentifiers[0].identifier
-          : "undefined",
-        pages: book.volumeInfo.pageCount,
-        categories: Array.isArray(book.volumeInfo.categories)
-          ? book.volumeInfo.categories[0]
-          : book.volumeInfo.categories,
-        rate: book.volumeInfo.averageRating,
-        imageLink: book.volumeInfo.imageLinks.thumbnail,
-        language: book.volumeInfo.language,
-        isForSale: book.saleInfo.saleability,
-      };
-    });
+      const books = data.items.map(book => {
+        return {
+          id: book.id,
+          title: book.volumeInfo.title,
+          authors: book.volumeInfo.authors,
+          publisher: book.volumeInfo.publisher,
+          previewLink: book.volumeInfo.previewLink,
+          publishedDate: book.volumeInfo.publishedDate,
+          description: book.volumeInfo.description?.replaceAll("<p>", " "),
+          isbnType: book.volumeInfo.industryIdentifiers
+            ? book.volumeInfo.industryIdentifiers[0].type
+            : "isbn",
+          isbn: book.volumeInfo.industryIdentifiers
+            ? book.volumeInfo.industryIdentifiers[0].identifier
+            : "undefined",
+          pages: book.volumeInfo.pageCount,
+          categories: Array.isArray(book.volumeInfo.categories)
+            ? book.volumeInfo.categories[0]
+            : book.volumeInfo.categories,
+          rate: book.volumeInfo.averageRating,
+          imageLink: book.volumeInfo.imageLinks.thumbnail,
+          language: book.volumeInfo.language,
+          isForSale: book.saleInfo.saleability,
+        };
+      });
 
-    dispatch({ type: "GET_BOOKS", payload: books });
+      dispatch({ type: "GET_BOOKS", payload: books });
+    } catch (error) {
+      console.log(error);
+      setMessage(error);
+    }
+  };
+
+  const setMessage = msg => {
+    dispatch({ type: "SET_ERROR", payload: msg.message });
   };
 
   // Open preview modal
@@ -103,11 +113,13 @@ export const BooksProvider = ({ children }) => {
         displayPreview: state.displayPreview,
         bookmarks: state.bookmarks,
         loadBookmarks: state.loadBookmarks,
+        message: state.message,
         getBooks,
         renderPreview,
         closePreview,
         bookMark,
         renderBookmarks,
+        setMessage,
       }}
     >
       {children}
