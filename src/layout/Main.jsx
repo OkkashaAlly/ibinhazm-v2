@@ -1,4 +1,4 @@
-import { useContext, useEffect } from "react";
+import { useContext, useState, useEffect } from "react";
 import BooksContext from "../context/BooksContext";
 import Book from "../components/Book";
 import Spinner from "../components/shared/Spinner";
@@ -9,7 +9,17 @@ function Main() {
   const { books, bookmarks, loadBookmarks, loading, getBooks, message } =
     useContext(BooksContext);
 
-  useEffect(_ => getBooks("flowers", 1), []);
+  const [mount, setMount] = useState(false);
+
+  useEffect(
+    _ => {
+      if (!mount) {
+        setMount(true);
+        getBooks("flowers", 1);
+      }
+    },
+    [getBooks, mount]
+  );
 
   if (loading) {
     return (
