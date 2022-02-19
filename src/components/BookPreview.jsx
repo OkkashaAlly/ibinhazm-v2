@@ -83,6 +83,7 @@ function BookPreview({ book }) {
             <a
               href={book.previewLink}
               target="_blank"
+              // ref={"noreferrer"}
               className="btn btn__download"
             >
               Preview

@@ -1,4 +1,4 @@
-import { createContext, useState, useReducer } from "react";
+import { createContext, useReducer } from "react";
 import BooksReducer from "./BooksReducer";
 
 const BooksContext = createContext();
@@ -72,13 +72,12 @@ export const BooksProvider = ({ children }) => {
         };
       });
 
-      // console.log(data);
       dispatch({
         type: "GET_BOOKS",
         payload: { results: books, page, query, index },
       });
     } catch (error) {
-      console.log(error);
+      console.log(error.code);
       setMessage(error);
     }
   };
