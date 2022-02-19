@@ -69,16 +69,15 @@ function BookPreview({ book }) {
           <p className="paragraph light">{book.description}</p>
         </div>
         <div className="preview__book-button m-t-b m-b-m">
-          {book.isForSale === "FREE" ? (
+          {book.isForSale === "FREE" &&
+          book.downloadLink !== undefined &&
+          book.downloadType !== "Not available" ? (
             <a
               href={book.downloadLink}
               className="btn btn__download"
               download={book.title}
             >
-              {book.downloadLink === undefined ||
-              book.downloadType === "Not available"
-                ? "Cant Download"
-                : "Download"}
+              Download
             </a>
           ) : (
             <a
@@ -86,7 +85,7 @@ function BookPreview({ book }) {
               target="_blank"
               className="btn btn__download"
             >
-              Buy THIS BOOK
+              Preview
             </a>
           )}
         </div>
