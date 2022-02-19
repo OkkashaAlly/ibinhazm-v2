@@ -3,8 +3,6 @@ import sprite from "../assets/sprite.svg";
 import BooksContext from "../context/BooksContext";
 
 function BookPreview({ book }) {
-  // book.bookmarked = false;
-
   const { closePreview, displayPreview, bookMark } = useContext(BooksContext);
 
   return (
@@ -47,6 +45,9 @@ function BookPreview({ book }) {
             <li className="preview__book-info rate">
               rate: <span className="light">{book.rate}</span>
             </li>
+            <li className="preview__book-info rate">
+              format: <span className="light">{book.downloadType}</span>
+            </li>
           </ul>
         </div>
         <div className="preview__book-bottom m-t-m">
@@ -68,13 +69,26 @@ function BookPreview({ book }) {
           <p className="paragraph light">{book.description}</p>
         </div>
         <div className="preview__book-button m-t-b m-b-m">
-          <a
-            href={book.previewLink}
-            target="_blank"
-            className="btn btn__download"
-          >
-            Download / Buy
-          </a>
+          {book.isForSale === "FREE" ? (
+            <a
+              href={book.downloadLink}
+              className="btn btn__download"
+              download={book.title}
+            >
+              {book.downloadLink === undefined ||
+              book.downloadType === "Not available"
+                ? "Cant Download"
+                : "Download"}
+            </a>
+          ) : (
+            <a
+              href={book.previewLink}
+              target="_blank"
+              className="btn btn__download"
+            >
+              Buy THIS BOOK
+            </a>
+          )}
         </div>
       </div>
     </>

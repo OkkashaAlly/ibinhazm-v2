@@ -25,6 +25,7 @@ export const BooksProvider = ({ children }) => {
   // Load books from API
   const getBooks = async (query = "flowers", page) => {
     try {
+      closePreview();
       dispatch({ type: "SET_LOADING" });
 
       const index = page === 1 ? 1 : (page - 1) * 10;
@@ -42,6 +43,12 @@ export const BooksProvider = ({ children }) => {
           authors: book.volumeInfo.authors,
           publisher: book.volumeInfo.publisher,
           previewLink: book.volumeInfo.previewLink,
+          downloadType: book.accessInfo.pdf.isAvailable
+            ? "PDF available"
+            : "Not available",
+          downloadLink: book.accessInfo.pdf.isAvailable
+            ? book.accessInfo.pdf.downloadLink
+            : book.accessInfo.pdf.acsTokenLink,
           publishedDate: book.volumeInfo.publishedDate,
           description: book.volumeInfo.description?.replaceAll("<p>", " "),
           isbnType: book.volumeInfo.industryIdentifiers
@@ -57,10 +64,15 @@ export const BooksProvider = ({ children }) => {
           rate: book.volumeInfo.averageRating,
           imageLink: book.volumeInfo.imageLinks.thumbnail,
           language: book.volumeInfo.language,
-          isForSale: book.saleInfo.saleability,
+          isForSale:
+            book.saleInfo.saleability === "FREE" ||
+            book.saleInfo.saleability === "NOT_FOR_SALE"
+              ? "FREE"
+              : "BUY",
         };
       });
 
+      // console.log(data);
       dispatch({
         type: "GET_BOOKS",
         payload: { results: books, page, query, index },
