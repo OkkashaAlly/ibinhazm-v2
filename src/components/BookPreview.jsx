@@ -75,6 +75,8 @@ function BookPreview({ book }) {
             <a
               href={book.downloadLink}
               className="btn btn__download"
+              target="_blank"
+              rel="noopener noreferrer"
               download={book.title}
             >
               Download
