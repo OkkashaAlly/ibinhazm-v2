@@ -8,7 +8,12 @@ const BooksReducer = (state, action) => {
     case "GET_BOOKS":
       return {
         ...state,
-        books: action.payload,
+        search: {
+          results: action.payload.results,
+          page: action.payload.page,
+          query: action.payload.query,
+          index: action.payload.index,
+        },
         loading: false,
         loadBookmarks: false,
         message: {},
@@ -45,6 +50,12 @@ const BooksReducer = (state, action) => {
           type: "error",
           text: action.payload,
         },
+      };
+    case "SET_PAGINATION":
+      return {
+        ...state,
+        page: action.payload,
+        index: action.payload * 10,
       };
     default:
       return {

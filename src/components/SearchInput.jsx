@@ -1,7 +1,5 @@
 import { useState, useContext } from "react";
 import BooksContext from "../context/BooksContext";
-import Message from "./shared/Message";
-
 function SearchInput() {
   const [text, setText] = useState("");
 
@@ -20,7 +18,7 @@ function SearchInput() {
       setMessage(msg);
     } else {
       closePreview();
-      getBooks(text);
+      getBooks(text, 1);
     }
   };
 

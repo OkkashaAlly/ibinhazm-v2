@@ -9,7 +9,7 @@ function Main() {
   const { books, bookmarks, loadBookmarks, loading, getBooks, message } =
     useContext(BooksContext);
 
-  useEffect(_ => getBooks(), []);
+  useEffect(_ => getBooks("flowers", 1), []);
 
   if (loading) {
     return (

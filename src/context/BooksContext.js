@@ -6,7 +6,12 @@ const BooksContext = createContext();
 export const BooksProvider = ({ children }) => {
   const initialState = {
     book: {},
-    books: [],
+    search: {
+      query: [],
+      results: [],
+      page: 1,
+      index: 1,
+    },
     bookmarks: [],
     loading: false,
     showPreview: {},
@@ -18,12 +23,14 @@ export const BooksProvider = ({ children }) => {
   const [state, dispatch] = useReducer(BooksReducer, initialState);
 
   // Load books from API
-  const getBooks = async (query = "flowers") => {
+  const getBooks = async (query = "flowers", page) => {
     try {
       dispatch({ type: "SET_LOADING" });
 
+      const index = page === 1 ? 1 : (page - 1) * 10;
+
       const response = await fetch(
-        `https://www.googleapis.com/books/v1/volumes/?q=${query}`
+        `https://www.googleapis.com/books/v1/volumes/?q=${query}&startIndex=${index}`
       );
 
       const data = await response.json();
@@ -54,7 +61,10 @@ export const BooksProvider = ({ children }) => {
         };
       });
 
-      dispatch({ type: "GET_BOOKS", payload: books });
+      dispatch({
+        type: "GET_BOOKS",
+        payload: { results: books, page, query, index },
+      });
     } catch (error) {
       console.log(error);
       setMessage(error);
@@ -115,7 +125,9 @@ export const BooksProvider = ({ children }) => {
   return (
     <BooksContext.Provider
       value={{
-        books: state.books,
+        books: state.search.results,
+        page: state.search.page,
+        query: state.search.query,
         book: state.book,
         loading: state.loading,
         showPreview: state.showPreview,
